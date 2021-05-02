@@ -7,9 +7,6 @@ const cors = require("cors");
 const xhr2 = require("xhr2")
 
 
-const port = 8080 || process.env.PORT
-
-
 // Endpoints
 const district = require("./router/district");
 const taluk = require("./router/taluk");
@@ -31,4 +28,4 @@ app.use("/api/v1/", taluk);
 app.use("/api/v1/", election);
 
 
-app.listen(port, () => console.log("Server is up and running"));
+app.listen(8080 || process.env.PORT, () => console.log("Server is up and running"));
