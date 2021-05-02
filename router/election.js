@@ -27,9 +27,9 @@ router.get("/election", async(_,res) => {
 
 // POST
 router.post("/election", uploadPhoto, async(req, res) => {
-    req.header("Access-Control-Allow-Origin", "*")
+   console.log(req.file)
     let file = req.file
-    let metadata = {contentType: file.mimetype, name: file.originalname}
+    let metadata = {contentType: file.type, name: file.name}
     var storageRef = storage.ref().child(`election/${Date.now()}_${file.originalname}`).put(file.buffer, metadata)
     storageRef.on(
         "state_changed",
