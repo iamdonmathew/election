@@ -19,7 +19,7 @@ router.get("/taluk/:id", async (req, res) => {
     if(!exist) {
         return res.status(500).json({"message": "There is no district"})
     }
-    const data = await Taluk.find({districtID: req.params.id}).populate("districtID").sort({"_id": "-1"})
+    const data = await Taluk.find({districtID: req.params.id}).populate("districtID").sort({"talukName": "1"})
     return res.status(200).json({"taluks": data})
 })
 
