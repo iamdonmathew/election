@@ -84,13 +84,12 @@ router.get("/electionparty/:party", async (req,res) => {
 
 
 // GET Taluk
-router.get("/election/:district/:taluk", async (req,res) => {
+router.get("/electionbytaluk/:taluk", async (req,res) => {
     const existTaluk = await Taluk.findById({_id: req.params.taluk});
-    const existDistrict = await District.findById({_id: req.params.district});
-    if(!existTaluk || !existDistrict) {
+    if(!existTaluk) {
         return res.status(200).json({"message": "There is no data!"})
     }
-    const data = await Election.find({district: req.params.district, taluk: req.params.taluk}).populate("district taluk");
+    const data = await Election.find({taluk: req.params.taluk}).populate("district taluk");
     if(!data) {
         return res.status(200).json({"message": "There is no data"})
     }
