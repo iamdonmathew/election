@@ -19,7 +19,7 @@ const uploadPhoto = upload.single('file');
 router.get("/election", async(_,res) => {
     const data = await Election.find({}).populate("district taluk").sort({"votecount": "-1"});
     if(data.length == 0) {
-        return res.status(500).json({"message": "There is no data"});
+        return res.status(200).json({"message": "There is no data"});
     }
     return res.status(200).json({"elections": data});
 })
@@ -27,9 +27,8 @@ router.get("/election", async(_,res) => {
 
 // POST
 router.post("/election", uploadPhoto, async(req, res) => {
-   console.log(req.file)
     let file = req.file
-    let metadata = {contentType: file.type, name: file.name}
+    let metadata = {contentType: file.mimetype, name: file.originalname}
     var storageRef = storage.ref().child(`election/${Date.now()}_${file.originalname}`).put(file.buffer, metadata)
     storageRef.on(
         "state_changed",
@@ -64,11 +63,11 @@ router.post("/election", uploadPhoto, async(req, res) => {
 router.get("/election/:district", async (req,res) => {
     const exist = await District.findById({_id: req.params.district});
     if(!exist) {
-        return res.status(500).json({"message": "There is no district!"})
+        return res.status(200).json({"message": "There is no district!"})
     }
     const data = await Election.find({district: req.params.district}).populate("district taluk").sort({"votecount":"-1"});
     if(data.length == 0) {
-        return res.status(500).json({"message": "There is no data"})
+        return res.status(200).json({"message": "There is no data"})
     }
     return res.status(200).json({"elections": data});
 })
@@ -78,7 +77,7 @@ router.get("/election/:district", async (req,res) => {
 router.get("/electionparty/:party", async (req,res) => {
     const data = await Election.find({party: req.params.party}).populate("district taluk").sort({"votecount":"-1"})
     if(data.length == 0) {
-        return res.status(500).json({"message": "There is no data"})
+        return res.status(200).json({"message": "There is no data"})
     }
     return res.status(200).json({"elections": data});
 })
@@ -89,11 +88,11 @@ router.get("/election/:district/:taluk", async (req,res) => {
     const existTaluk = await Taluk.findById({_id: req.params.taluk});
     const existDistrict = await District.findById({_id: req.params.district});
     if(!existTaluk || !existDistrict) {
-        return res.status(500).json({"message": "There is no data!"})
+        return res.status(200).json({"message": "There is no data!"})
     }
     const data = await Election.findOne({district: req.params.district, taluk: req.params.taluk}).populate("district taluk");
     if(!data) {
-        return res.status(500).json({"message": "There is no data"})
+        return res.status(200).json({"message": "There is no data"})
     }
     return res.status(200).json({"elections": data});
 })
@@ -102,7 +101,7 @@ router.get("/election/:district/:taluk", async (req,res) => {
 router.delete("/election/:id", async(req,res) => {
     const exist = await Election.findById({_id:  req.params.id});
     if(!exist) {
-        return res.status(500).json({"message": "There is no user!"})
+        return res.status(200).json({"message": "There is no user!"})
     }
     try {
         const data = await Election.findById({_id: req.params.id});
