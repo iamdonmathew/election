@@ -17,7 +17,7 @@ const uploadPhoto = upload.single('file');
 
 // GET
 router.get("/election", async(_,res) => {
-    const data = await Election.find({}).sort({"_id": "-1"});
+    const data = await Election.find({}).populate("district taluk").sort({"_id": "-1"});
     if(data.length == 0) {
         return res.status(500).json({"message": "There is no data"});
     }
@@ -65,7 +65,7 @@ router.get("/election/:district", async (req,res) => {
     if(!exist) {
         return res.status(500).json({"message": "There is no district!"})
     }
-    const data = await Election.find({district: req.params.district});
+    const data = await Election.find({district: req.params.district}).populate("district taluk");
     if(data.length == 0) {
         return res.status(500).json({"message": "There is no data"})
     }
@@ -80,7 +80,7 @@ router.get("/election/:district/:taluk", async (req,res) => {
     if(!existTaluk || !existDistrict) {
         return res.status(500).json({"message": "There is no data!"})
     }
-    const data = await Election.findOne({district: req.params.district, taluk: req.params.taluk});
+    const data = await Election.findOne({district: req.params.district, taluk: req.params.taluk}).populate("district taluk");
     if(!data) {
         return res.status(500).json({"message": "There is no data"})
     }
