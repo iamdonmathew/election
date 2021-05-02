@@ -17,7 +17,7 @@ const uploadPhoto = upload.single('file');
 
 // GET
 router.get("/election", async(_,res) => {
-    const data = await Election.find({}).populate("district taluk").sort({"_id": "-1"});
+    const data = await Election.find({}).populate("district taluk").sort({"votecount": "-1"});
     if(data.length == 0) {
         return res.status(500).json({"message": "There is no data"});
     }
@@ -65,9 +65,19 @@ router.get("/election/:district", async (req,res) => {
     if(!exist) {
         return res.status(500).json({"message": "There is no district!"})
     }
-    const data = await Election.find({district: req.params.district}).populate("district taluk");
+    const data = await Election.find({district: req.params.district}).populate("district taluk").sort({"votecount":"-1"});
     if(data.length == 0) {
         return res.status(500).json({"message": "There is no data"})
+    }
+    return res.status(200).json({"elections": data});
+})
+
+
+// GET Party
+router.get("/election/:party", async (req,res) => {
+    const data = await Election.find({party: req.params.party}).populate("district taluk").sort({"votecount":"-1"})
+    if(data.length == 0) {
+        return res.status(500).json({"message": "Ther is no data"})
     }
     return res.status(200).json({"elections": data});
 })
