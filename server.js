@@ -28,4 +28,4 @@ app.use("/api/v1/", taluk);
 app.use("/api/v1/", election);
 
 
-app.listen(8080 || process.env.PORT, () => console.log("Server is up and running"));
+app.listen(process.env.PORT || 8080, () => console.log("Server is up and running"));
