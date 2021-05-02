@@ -90,7 +90,7 @@ router.get("/election/:district/:taluk", async (req,res) => {
     if(!existTaluk || !existDistrict) {
         return res.status(200).json({"message": "There is no data!"})
     }
-    const data = await Election.findOne({district: req.params.district, taluk: req.params.taluk}).populate("district taluk");
+    const data = await Election.find({district: req.params.district, taluk: req.params.taluk}).populate("district taluk");
     if(!data) {
         return res.status(200).json({"message": "There is no data"})
     }
