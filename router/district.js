@@ -4,7 +4,7 @@ const {District} = require("../models/district");
 
 // GET
 router.get("/district", async (_, res) => {
-    const data = await District.find({}).sort({"_id": "-1"});
+    const data = await District.find({}).sort({"districtName": "1"});
     if(data.length == 0) {
         return res.status(500).json({"message": "There is no data"})
     }

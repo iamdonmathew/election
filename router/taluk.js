@@ -5,7 +5,7 @@ const {Taluk} = require("../models/taluk");
 
 // GET
 router.get("/taluk", async (_, res) => {
-    const data = await Taluk.find({}).populate("districtID").sort({"_id": "-1"});
+    const data = await Taluk.find({}).populate("districtID").sort({"talukName": "1"});
     if(data.length == 0) {
         return res.status(500).json({"message": "There is no data"})
     }
