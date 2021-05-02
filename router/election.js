@@ -77,7 +77,7 @@ router.get("/election/:district", async (req,res) => {
 router.get("/electionparty/:party", async (req,res) => {
     const data = await Election.find({party: req.params.party}).populate("district taluk").sort({"votecount":"-1"})
     if(data.length == 0) {
-        return res.status(500).json({"message": "Ther is no data"})
+        return res.status(500).json({"message": "There is no data"})
     }
     return res.status(200).json({"elections": data});
 })
